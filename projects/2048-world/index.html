@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>2048: Worlds of Time</title>
+    <link rel="icon" href="data:,">
+
+    <!-- PWA & Mobile Experience Enhancements -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="core.css?v=2">
+    <link rel="stylesheet" href="game.css?v=3">
+
+</head>
+
+<body>
+
+    <div id="start-screen" class="screen">
+        <div class="title-container">
+            <h1>2048</h1>
+            <h2>Worlds of Time</h2>
+        </div>
+        <div class="start-buttons-container">
+            <button id="start-run-button">Start Run</button>
+            <button id="tutorial-button">Tutorial</button>
+            <button id="settings-button">Settings</button>
+        </div>
+        <div class="credits">
+            <p>Game By DarthFranco</p>
+            <p>Sound & Music By narcolepsyDriver</p>
+            <p>Inspired by 2048 and Balatro</p>
+        </div>
+    </div>
+
+    <div id="tutorial-screen" class="screen">
+        <div id="tutorial-game-area">
+            <div id="tutorial-header">
+                <h2>Tutorial</h2>
+                <div id="tutorial-progress">Step <span id="tutorial-step-num">1</span> of 6</div>
+            </div>
+            <div id="tutorial-instruction">
+                <p id="tutorial-text">Swipe to move tiles. Same numbers combine!</p>
+            </div>
+            <div id="tutorial-stats" style="display: none;">
+                <div id="tutorial-timer-box" class="stat-box">
+                    <div class="label">TIMER</div>
+                    <div id="tutorial-timer">60</div>
+                </div>
+                <div id="tutorial-goal-box" class="stat-box">
+                    <div class="label">GOAL</div>
+                    <div id="tutorial-goal">16</div>
+                </div>
+            </div>
+            <div id="tutorial-grid-container"></div>
+            <div id="tutorial-deck-container" class="deck-container" style="display: none;">
+                <h3 class="deck-title">DECK</h3>
+                <div id="tutorial-deck-display" class="deck-display"></div>
+            </div>
+        </div>
+        <div id="tutorial-buttons">
+            <button id="tutorial-skip-button">Skip Tutorial</button>
+        </div>
+        <div id="tutorial-lesson-transition">
+            <div class="transition-text"></div>
+        </div>
+    </div>
+
+    <div id="story-screen" class="screen">
+        <button id="skip-story-button">Skip</button>
+        <div id="story-grid-container"></div>
+        <div id="dialogue-box">
+            <p id="dialogue-text"></p>
+        </div>
+        <button id="story-continue-button" style="display: none;">Play Again</button>
+    </div>
+
+    <div id="world-select-screen" class="screen">
+        <h1>Choose Your Next World</h1>
+        <p class="world-select-instruction">Each world has a unique power that remains active while you are there.</p>
+        <div id="world-options-container"></div>
+    </div>
+
+    <div id="world-screen" class="screen">
+        <h1 id="world-title">World 1</h1>
+        <p id="world-power-description"></p>
+        <div id="node-map-wrapper">
+            <div id="node-map-container"></div>
+        </div>
+        <div id="node-tooltip">
+            <h3 class="tooltip-title">Fight</h3>
+            <p class="tooltip-goal">Goal: <span></span></p>
+            <p class="tooltip-time">Time: <span></span>s</p>
+            <p class="tooltip-reward">Reward: <span>Powerup</span></p>
+        </div>
+        <div id="deck-tooltip">
+            <h3 class="tooltip-title">Tile</h3>
+            <div class="tooltip-powerups"></div>
+            <p class="tooltip-desc">Standard tile.</p>
+        </div>
+        <div id="joker-tooltip">
+            <h3 class="tooltip-title">Joker</h3>
+            <p class="tooltip-desc">Description</p>
+            <button id="joker-delete-btn" class="joker-delete-btn">Destroy Joker</button>
+        </div>
+        <div id="world-deck-container" class="deck-container">
+            <div id="world-joker-display" class="joker-display"></div>
+            <h3 class="deck-title deck-toggle">DECK <span class="toggle-icon"></span></h3>
+            <div id="world-deck-display" class="deck-display"></div>
+        </div>
+        <button id="play-blind-button" style="display: none;">Play</button>
+    </div>
+    <div id="game-screen" class="screen">
+        <header>
+            <h1>2048</h1>
+            <div class="stats-container">
+                <div id="timer-box" class="stat-box">
+                    <div class="label">TIMER</div>
+                    <div id="timer">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">GOAL</div>
+                    <div id="goal">0</div>
+                </div>
+            </div>
+        </header>
+        <div class="game-board-area">
+            <div id="grid-container">
+                <div id="announcement-container"></div>
+            </div>
+            <div id="game-deck-container" class="deck-container">
+                <div id="game-joker-display" class="joker-display"></div>
+                <h3 class="deck-title">DECK</h3>
+                <div id="game-deck-display" class="deck-display"></div>
+            </div>
+        </div>
+        <div id="countdown-overlay">
+            <h1 id="countdown-text">3</h1>
+        </div>
+    </div>
+    <div id="result-screen" class="screen">
+        <h1 id="result-message">You Win!</h1>
+        <p id="result-details"></p><button id="result-button">Continue</button>
+    </div>
+    <div id="shop-screen" class="screen">
+        <h1>Powerup</h1>
+        <p style="margin-bottom: 10px;">Choose one item to improve your run.</p>
+        <p id="shop-world-power-description"></p>
+        <div id="shop-options-container"></div>
+        <button id="refresh-shop-button" style="display: none;">Refresh Powerups</button>
+        <div id="shop-deck-container" class="deck-container collapsed">
+            <div id="shop-joker-display" class="joker-display"></div>
+            <h3 class="deck-title deck-toggle">YOUR DECK <span class="toggle-icon">[+]</span></h3>
+            <div id="shop-deck-display" class="deck-display"></div>
+        </div>
+        <button id="skip-shop-button">Skip Powerup</button>
+    </div>
+
+    <!-- MYSTERY SCREEN (Entry) -->
+    <div id="mystery-screen" class="screen">
+        <h1 class="mystery-title">Mystery Space</h1>
+        <div class="mystery-content">
+            <div class="mystery-icon">?</div>
+            <p class="mystery-desc">A mysterious energy surrounds this place...</p>
+            <button id="mystery-explore-button">Explore</button>
+        </div>
+    </div>
+
+    <!-- MYSTERY EVENT SCREEN (Interaction) -->
+    <div id="mystery-event-screen" class="screen">
+        <h1 id="mystery-event-title" class="mystery-title">Event Name</h1>
+        <div class="mystery-content">
+            <div id="mystery-event-icon" class="mystery-icon" style="border-radius: 10px; animation: none;">!</div>
+            <p id="mystery-event-desc" class="mystery-desc">Event description goes here.</p>
+            <div class="mystery-actions">
+                <button id="mystery-action-button">Accept</button>
+                <button id="mystery-leave-button" style="background-color: #7f8c8d; margin-top: 10px;">Leave</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JOKER REWARD SCREEN -->
+    <div id="joker-reward-screen" class="screen">
+        <h1 id="joker-reward-title">Joker Chest</h1>
+        <p id="joker-reward-desc">Choose one Joker to add to your run.</p>
+        <div id="joker-reward-options"></div>
+        <button id="joker-reward-back-button" style="display: none;">Choose a Different Joker</button>
+    </div>
+
+    <button id="ingame-settings-button">Settings</button>
+    <button id="map-button">Map</button>
+
+    <div id="delete-tile-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Select a Tile to Delete</h2>
+            <p>This action is permanent for this run.</p>
+            <div id="delete-deck-display"></div>
+        </div>
+    </div>
+    <div id="upgrade-tile-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="upgrade-modal-title">Upgrade a Tile</h2>
+            <p id="upgrade-modal-desc">Select a tile to double its value.</p>
+            <div id="upgrade-deck-display"></div>
+        </div>
+    </div>
+    <div id="settings-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Settings</h2>
+            <div class="settings-option">
+                <span>Music</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="music-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="settings-option">
+                <span>Sound Effects</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="sfx-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <button id="settings-close-button" style="margin-top: 30px; width: 100%;">Close</button>
+            <button id="reset-run-button">Reset Run</button>
+        </div>
+    </div>
+    <div id="map-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>World Map</h2>
+            <div id="map-container"></div>
+            <button id="map-close-button" style="margin-top: 30px; width: 100%;">Close</button>
+        </div>
+    </div>
+
+    <!-- JOKER SELECTION SCREEN -->
+    <div id="joker-select-screen" class="screen">
+        <h1>Development Joker Select</h1>
+        <p>Choose up to 2 Jokers for Dev Mode, or start with no Jokers for a regular run.</p>
+        <div id="joker-slots-container">
+            <div class="joker-slot empty">Empty</div>
+            <div class="joker-slot empty">Empty</div>
+        </div>
+        <div id="joker-list-container">
+            <!-- Jokers populated by JS -->
+        </div>
+        <button id="start-joker-run-button" disabled>Start Run</button>
+    </div>
+
+    <!-- AUDIO ELEMENTS -->
+    <audio id="audio-menu" src="Sound/menu_loop_1.m4a" loop preload="auto"></audio>
+    <audio id="audio-small" src="Sound/small_blind.m4a" loop preload="auto"></audio>
+    <audio id="audio-big" src="Sound/big_blind.m4a" loop preload="auto"></audio>
+    <audio id="audio-boss" src="Sound/boss_blind.m4a" loop preload="auto"></audio>
+    <audio id="sfx-swipe_1" src="Sound/swipe_1.wav" preload="auto"></audio>
+    <audio id="sfx-swipe_2" src="Sound/swipe_2.wav" preload="auto"></audio>
+    <audio id="sfx-swipe_3" src="Sound/swipe_3.wav" preload="auto"></audio>
+    <audio id="sfx-combine_1" src="Sound/combine_1.wav" preload="auto"></audio>
+    <audio id="sfx-combine_2" src="Sound/combine_2.wav" preload="auto"></audio>
+    <audio id="sfx-combine_3" src="Sound/combine_3.wav" preload="auto"></audio>
+    <audio id="sfx-combine_4" src="Sound/combine_4.wav" preload="auto"></audio>
+    <audio id="sfx-combine_5" src="Sound/combine_5.wav" preload="auto"></audio>
+    <audio id="sfx-combine_6" src="Sound/combine_6.wav" preload="auto"></audio>
+    <audio id="sfx-duplex_combine_1" src="Sound/duplex_combine_1.wav" preload="auto"></audio>
+    <audio id="sfx-duplex_combine_2" src="Sound/duplex_combine_2.wav" preload="auto"></audio>
+    <audio id="sfx-wild_combine_1" src="Sound/wild_combine_1.wav" preload="auto"></audio>
+    <audio id="sfx-wild_combine_2" src="Sound/wild_combine_2.wav" preload="auto"></audio>
+    <audio id="sfx-shop_click_1" src="Sound/shop_click_1.wav" preload="auto"></audio>
+    <audio id="sfx-shop_click_2" src="Sound/shop_click_2.wav" preload="auto"></audio>
+    <audio id="sfx-shop_click_3" src="Sound/shop_click_3.wav" preload="auto"></audio>
+    <audio id="sfx-big_announcement_1" src="Sound/big_announcement_1.wav" preload="auto"></audio>
+    <audio id="sfx-big_announcement_2" src="Sound/big_announcement_2.wav" preload="auto"></audio>
+    <audio id="sfx-big_announcement_3" src="Sound/big_announcement_3.wav" preload="auto"></audio>
+    <audio id="sfx-small_announcement_bip_1" src="Sound/small_announcement_bip1.wav" preload="auto"></audio>
+    <audio id="sfx-small_announcement_bip_2" src="Sound/small_announcement_bip2.wav" preload="auto"></audio>
+    <audio id="sfx-small_announcement_bip_3" src="Sound/small_announcement_bip3.wav" preload="auto"></audio>
+
+    <script src="jokers/Joker.js?v=2"></script>
+    <script src="jokers/JokerManager.js?v=3"></script>
+    <script src="jokers/NaturalLaw.js"></script>
+    <script src="jokers/NaturalGrowth.js"></script>
+    <script src="jokers/RuleOfTwo.js?v=2"></script>
+    <script src="jokers/BinarySynthesis.js"></script>
+    <script src="jokers/Photosynthesis.js"></script>
+    <script src="jokers/CrossPollination.js"></script>
+    <script src="jokers/Wildfire.js"></script>
+    <script src="jokers/PanicButton.js"></script>
+    <script src="jokers/Afterimage.js"></script>
+    <script src="jokers/PhaseShift.js"></script>
+    <script src="jokers/Sanctuary.js"></script>
+    <script src="jokers/Underdog.js"></script>
+    <script src="jokers/Superbloom.js"></script>
+    <script src="jokers/Overgrowth.js"></script>
+    <script src="jokers/SmallWonder.js?v=2"></script>
+    <script src="jokers/TheCleansing.js"></script>
+    <script src="jokers/HighRoller.js"></script>
+    <script src="jokers/CompoundInterest.js"></script>
+    <script src="jokers/SacrificialAltar.js"></script>
+    <script src="jokers/PreemptiveStrike.js"></script>
+    <script src="jokers/TheVanguard.js"></script>
+    <script src="jokers/Optimization.js"></script>
+    <script src="jokers/Excision.js"></script>
+    <script src="jokers/Eternity.js"></script>
+    <script src="jokers/LoneWolf.js"></script>
+    <script src="jokers/FlowState.js?v=2"></script>
+    <script src="jokers/PopulationBoom.js"></script>
+    <script src="script.js?v=6"></script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+.DS_Store
+.vercel/
+node_modules/
+*.log
+
+# Original source archives; the site uses the extracted 2048 game instead.
+2048world.zip
+converty.zip
+
+# Earlier references and unused Converty assets are not part of this portfolio.
+reference-frames/
+full_ocean.png
+projects/converty/
+assets/work-*.jpg
+assets/project-screenshots/converty-*.png
+
+# Browser-ready AAC versions of these large music tracks are committed instead.
+projects/2048-world/Sound/menu_loop_1.wav
+projects/2048-world/Sound/small_blind.wav
+projects/2048-world/Sound/big_blind.wav
+projects/2048-world/Sound/boss_blind.wav
+projects/2048-world/2048.html
