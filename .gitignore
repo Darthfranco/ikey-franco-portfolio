@@ -20,3 +20,5 @@ projects/2048-world/Sound/small_blind.wav
 projects/2048-world/Sound/big_blind.wav
 projects/2048-world/Sound/boss_blind.wav
 projects/2048-world/2048.html
+.vercel
+.env*
